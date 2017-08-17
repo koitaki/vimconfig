@@ -29,26 +29,23 @@ filetype plugin indent on    " required
 
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => GUI
+" => Colors and Fonts
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " 
 " Enable syntax highlighting
 syntax enable
 
+" Set encoding to UTF-8
+set encoding=utf-8
+
+
+"
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => GUI
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"
 " show line numbers
 set nu
-
-" set tabs to have 4 spaces
-set ts=4
-
-" indent when moving to the next line while writing code
-set autoindent
-
-" expand tabs into spaces
-set expandtab
-
-" when using the >> or << commands, shift lines by 4 spaces
-set shiftwidth=4
 
 " show a visual line under the cursor's current line
 set cursorline
@@ -56,10 +53,33 @@ set cursorline
 " show the matching part of the pair for [] {} and ()
 set showmatch
 
+" Split navigations
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+"
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Tabs, Indents, Folding
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" 
+" set tabs to have 2 spaces
+set tabstop=2
+
+" when using the >> or << commands, shift lines by 2 spaces
+set shiftwidth=2
+
+" expand tabs into spaces
+set expandtab
+
+" indent when moving to the next line while writing code
+set autoindent
 
 " Enable folding
 set foldmethod=indent
 set foldlevel=99
+
 
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -89,15 +109,6 @@ highlight BadWhitespace ctermbg=red guibg=darkred
 
 " Flag extra whitespace and mark it red
 au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
-
-" Set encoding to UTF-8
-set encoding=utf-8
-
-" Split navigations
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
 
 
 "

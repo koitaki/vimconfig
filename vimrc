@@ -1,11 +1,15 @@
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Vim 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Make ViM non-compatible with Vi (else it loses a lot of functionality)
+set nocompatible              " required to not retain compatibility with Vi & disable Gvim functions
+filetype off                  " required to stop the vim filetype caching at runtime that clashes with Vundle
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Vundle
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" 
-" Make ViM non-compatible with Vi (else it loses a lot of functionality)
-set nocompatible              " required to not retain compatibility with Vi & disable Gvim functions
-filetype off                  " required to stop the vim filetype caching at runtime that clashes with Vundle
 
 " set the runtime path to include Vundle and initialize
 " Windows
@@ -27,7 +31,7 @@ Plugin 'gmarik/Vundle.vim'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Add all your plugins here (note older versions of Vundle used Bundle instead of Plugin)
 
-Plugin tpope/vim-sensible
+Plugin 'tpope/vim-sensible'
 
 " Code completion
 Plugin 'mattn/emmet-vim'

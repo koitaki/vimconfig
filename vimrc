@@ -1,101 +1,66 @@
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Vim 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" Make ViM non-compatible with Vi (else it loses a lot of functionality)
-set nocompatible              " required to not retain compatibility with Vi & disable Gvim functions
-filetype off                  " required to stop the vim filetype caching at runtime that clashes with Vundle
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Vundle
+" => Basic Config
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" set the runtime path to include Vundle and initialize
-" Windows
-set rtp+=$HOME/.vim/bundle/Vundle.vim/
-call vundle#begin('$HOME/.vim/bundle/')
-" Linux
-"set rtp+=~/.vim/bundle/Vundle.vim
-"call vundle#begin()
+" Check if Windows OS and set home directory
+if has('win32') || has('win64')
+  set runtimepath^=~/.vim
+  set runtimepath+=~/.vim/after
+endif
 
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
+" Set path variable to current directory (and all sub-dirs)
+set path=.\**
 
-" let Vundle manage Vundle, required
-Plugin 'gmarik/Vundle.vim'
+" Detect filetype
+filetype on
+" Add filetype plugin if available
+filetype plugin on
+" Add filetype indent if available
+filetype indent on
+
+" Open in Full Screen Mode
+" This executes the command simalt ~x
+" Which is Alt Spacebar X
+autocmd GUIEnter * simalt ~x
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Plugins
+" => Set Tree List Style
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Add all your plugins here (note older versions of Vundle used Bundle instead of Plugin)
 
-Plugin 'tpope/vim-sensible'
+" Use newtr (Nerd Tree replacement) to set styles (manually do this via hitting i)
+" Use style 3 to get indented tree
+let g:netrw_liststyle=3
 
-" Code completion
-Plugin 'mattn/emmet-vim'
-Plugin 'Valloric/YouCompleteMe'
-Plugin 'SirVer/ultisnips'
+" Remove Directory Banner
+" let g:netrw_banner = 0
 
-" Code folding
-Plugin 'tmhedberg/SimpylFold'
+" Open in previous window
+let g:netrw_browse_split = 4
 
-" Python indentation & syntax
-Plugin 'vim-scripts/indentpython.vim'
-Plugin 'vim-syntastic/syntastic'
-Plugin 'nvie/vim-flake8'
+" Open in vertical split
+let g:netrw_altv = 1
 
-" Color schemes
-Plugin 'jnurmine/Zenburn'
-Plugin 'altercation/vim-colors-solarized'
+" Set Tree window size
+let g:netrw_winsize = 50
 
-" File Tree
-Plugin 'scrooloose/nerdtree'
+" Launch newtr after opening Vim
+augroup ProjectDrawer
+  autocmd!
+  autocmd VimEnter * :Vexplore
+augroup END
 
-" Tabs
-Plugin 'jistr/vim-nerdtree-tabs'
-let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
-
-" Search
-Plugin 'kien/ctrlp.vim'
-
-" Git
-Plugin 'tpope/vim-fugitive'
-
-" Statusbar
-Plugin 'Lokaltog/powerline', {'rtp': 'powerline/bindings/vim/'}
-
-
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
-
-"
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Colors and Fonts
+" => Key Mapping
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" 
-" Enable syntax highlighting
-syntax enable
 
-" Set encoding to UTF-8
-set encoding=utf-8
+" Change Esc key
+" No need, just use:
+" Use Ctrl-[ (control plus left square bracket)
 
-
-"
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => GUI
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"
-" show line numbers
-set nu
-
-" show a visual line under the cursor's current line
-set cursorline
-
-" show the matching part of the pair for [] {} and ()
-set showmatch
+" Set Default keys - Leader key from Ctrl to Space
+" let mapleader = " "
 
 " Split navigations
 nnoremap <C-J> <C-W><C-J>
@@ -103,76 +68,92 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
-"
+" Enable folding with the spacebar (or za)
+nnoremap <space> za
+
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Tabs, Indents, Folding
+" => Text, tab and indent related
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" 
-" set tab spaces
+
+" Set encoding to UTF-8
+set encoding=utf-8
+
+" Add syntax highlighting
+syntax enable 
+syntax on
+
+" indent when moving to the next line while writing code
+set autoindent
+
+" Show existing tab with spaces width
 set tabstop=2
 set softtabstop=2
 
 " when using the >> or << commands, shift lines by number of spaces
 set shiftwidth=2
 
-" expand tabs into spaces
+" Show line numbers
+set number
+
+" When indenting with '>', use 4 spaces width
+set shiftwidth=2
+
+" On pressing tab, insert spaces
 set expandtab
 
-" indent when moving to the next line while writing code
-set autoindent
+" Set code folding to indent when opening and closing
+set foldmethod=indent   
+set foldnestmax=10
+set nofoldenable
+set foldlevel=2
 
-" Enable folding
-set foldmethod=indent
-set foldlevel=99
+" Keep all folds open when a file is opened
+augroup OpenAllFoldsOnFileOpen
+    autocmd!
+    autocmd BufRead * normal zR
+augroup END
 
-" Enable folding with the spacebar (or za)
-nnoremap <space> za
+" Folding shortcuts
+" za: Toggle code folding at the current line.
+" zo: Open fold.
+" zc: Close fold.
+" zR: Open all folds.
+" zM: Close all folds.
 
-"
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Python
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" 
-" enable all Python syntax highlighting features
-let python_highlight_all = 1
-syntax on
+" Show invisibles
+set list
+set listchars=tab:»-,trail:·,eol:¬
 
-" Enable PEP8 indentation
-au BufNewFile,BufRead *.py
-    \ set tabstop=4
-    \ set softtabstop=4
-    \ set shiftwidth=4
-    \ set textwidth=79
-    \ set expandtab
-    \ set autoindent
-    \ set fileformat=unix
-
-" Enable indention for other types
-au BufNewFile,BufRead *.js, *.html, *.css, *.scss
-    \ set tabstop=2
-    \ set softtabstop=2
-    \ set shiftwidth=2
-
-"define BadWhitespace before using in a match
-highlight BadWhitespace ctermbg=red guibg=darkred
-
-" Flag extra whitespace and mark it red
-au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
+" show the matching part of the pair for [] {} and ()
+set showmatch
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Virtualenv Support
+" => Colors
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-"python with virtualenv support
-py << EOF
-import os
-import sys
-if 'VIRTUAL_ENV' in os.environ:
-  project_base_dir = os.environ['VIRTUAL_ENV']
-  activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
-  execfile(activate_this, dict(__file__=activate_this))
-EOF
+" Set colorscheme
+let g:airline_theme = 'cobalt2'
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Fonts
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Set font according to system
+if has("mac") || has("macunix")
+    set gfn=Hack:h14,Source\ Code\ Pro:h15,Menlo:h15
+elseif has("win16") || has("win32")
+    set gfn=Hack:h14,Source\ Code\ Pro:h12,Bitstream\ Vera\ Sans\ Mono:h11
+elseif has("gui_gtk2")
+    set gfn=Hack\ 14,Source\ Code\ Pro\ 12,Bitstream\ Vera\ Sans\ Mono\ 11
+elseif has("linux")
+    set gfn=Hack\ 14,Source\ Code\ Pro\ 12,Bitstream\ Vera\ Sans\ Mono\ 11
+elseif has("unix")
+    set gfn=Monospace\ 11
+endif
+
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
